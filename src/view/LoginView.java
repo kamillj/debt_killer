@@ -22,11 +22,9 @@ public class LoginView {
     private PasswordField passwordField;
     private Button loginButton;
 
-    private LoginModel loginModel;
     private LoginController loginController;
 
     public LoginView(LoginModel loginModel, LoginController loginController) {
-        this.loginModel = loginModel;
         this.loginController = loginController;
         createAndConfigurePane();
         createAndLayoutControls();
@@ -67,7 +65,7 @@ public class LoginView {
 
     private void addListeners(){
         loginButton.setOnAction(event -> {
-            if(loginModel.checkUsernameAndPassword(usernameField.getText(), passwordField.getText())){
+            if(loginController.sendUsernameAndPasswordToCheck(usernameField.getText(), passwordField.getText())){
                 System.out.println("Login succesful");
             } else {
                 System.out.println("Login failed");

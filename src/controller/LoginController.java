@@ -17,4 +17,8 @@ public class LoginController {
     public void updateEnteredPassword(String enteredPassword){
         loginModel.setEnteredPassword(enteredPassword);
     }
+
+    public boolean sendUsernameAndPasswordToCheck(String enteredUsername, String enteredPassword){
+        return loginModel.checkUsernameAndPassword(enteredUsername, enteredPassword);
+    }
 }
