@@ -1,13 +1,15 @@
 package app;
 
-import controller.LoginController;
+
+import app.controller.LoginController;
+import app.model.LoginModel;
+import app.view.LoginView;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import model.LoginModel;
-import view.LoginView;
 
 public class Main extends Application {
+
 
     @Override
     public void start(Stage primaryStage) {
