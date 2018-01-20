@@ -2,6 +2,7 @@ package app.view;
 
 import app.controller.LoginController;
 import app.model.LoginModel;
+import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -12,6 +13,8 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Priority;
+
+import java.sql.SQLException;
 
 public class LoginView {
 
@@ -24,12 +27,11 @@ public class LoginView {
 
     private LoginController loginController;
 
-    public LoginView(LoginModel loginModel, LoginController loginController) {
+    public LoginView(LoginController loginController) {
         this.loginController = loginController;
         createAndConfigurePane();
         createAndLayoutControls();
         addListeners();
-        updateControllerFromListeners();
     }
 
     public Parent asParent() {
@@ -64,17 +66,12 @@ public class LoginView {
     }
 
     private void addListeners(){
-        loginButton.setOnAction(event -> {
-            if(loginController.sendUsernameAndPasswordToCheck(usernameField.getText(), passwordField.getText())){
-                System.out.println("Login succesful");
-            } else {
-                System.out.println("Login failed");
+        loginButton.setOnAction((ActionEvent event) -> {
+            try {
+                loginController.sendUsernameAndPasswordToCheck(usernameField.getText(), passwordField.getText());
+            } catch (SQLException e) {
+                e.printStackTrace();
             }
         });
-    }
-
-    private void updateControllerFromListeners(){
-        usernameField.textProperty().addListener((observable, oldValue, newValue) -> loginController.updateEnteredUsername(newValue));
-        passwordField.textProperty().addListener((observable, oldValue, newValue) -> loginController.updateEnteredPassword(newValue));
     }
 }

@@ -1,30 +1,34 @@
 package app.model;
 
-import app.controller.LoginController;
+import util.JDBCUtil;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class LoginModel {
 
-    private String username = "kamillj";
-    private String password = "pass";
-    private String enteredUsername = "";
-    private String enteredPassword = "";
-    private boolean isLoginSuccessful;
 
-    private LoginController loginController;
-
-    public boolean checkUsernameAndPassword(String username, String password) {
-        isLoginSuccessful = username.equals(this.username) && password.equals(this.password);
-        return isLoginSuccessful;
-    }
     public LoginModel(){
-        checkUsernameAndPassword(enteredUsername, enteredPassword);
     }
 
-    public void setEnteredUsername(String enteredUsername) {
-        this.enteredUsername = enteredUsername;
-    }
+    public void checkUsernameAndPassword(String enteredUsername, String enteredPassword) throws SQLException {
+        Connection connection;
+        PreparedStatement preparedStatement;
+        String sql = "SELECT USERNAME, PASSWORD FROM ACCOUNTS WHERE USERNAME = ? AND PASSWORD = ?";
 
-    public void setEnteredPassword(String enteredPassword) {
-        this.enteredPassword = enteredPassword;
+        connection = JDBCUtil.getConnection();
+        preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.setString(1, enteredUsername);
+        preparedStatement.setString(2, enteredPassword);
+
+        ResultSet resultSet = preparedStatement.executeQuery();
+
+        if(resultSet.next()){
+            System.out.println("login successful");
+        } else {
+            System.out.println("login failed");
+        }
     }
 }

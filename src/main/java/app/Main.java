@@ -15,7 +15,7 @@ public class Main extends Application {
     public void start(Stage primaryStage) {
         LoginModel loginModel = new LoginModel();
         LoginController loginController = new LoginController(loginModel);
-        LoginView loginView = new LoginView(loginModel, loginController);
+        LoginView loginView = new LoginView(loginController);
 
         Scene scene = new Scene(loginView.asParent(), 400, 400);
         primaryStage.setScene(scene);
