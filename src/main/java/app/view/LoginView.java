@@ -1,7 +1,6 @@
 package app.view;
 
 import app.controller.LoginController;
-import app.model.LoginModel;
 import javafx.event.ActionEvent;
 import javafx.geometry.HPos;
 import javafx.geometry.Pos;
@@ -13,6 +12,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Priority;
+import util.ViewManager;
 
 import java.sql.SQLException;
 
@@ -29,7 +29,7 @@ public class LoginView {
 
     public LoginView(LoginController loginController) {
         this.loginController = loginController;
-        createAndConfigurePane();
+        createAndConfigureView();
         createAndLayoutControls();
         addListeners();
     }
@@ -38,7 +38,7 @@ public class LoginView {
         return loginDialog;
     }
 
-    private void createAndConfigurePane() {
+    private void createAndConfigureView() {
         loginDialog = new GridPane();
 
         ColumnConstraints leftCol = new ColumnConstraints();
@@ -71,6 +71,9 @@ public class LoginView {
                 loginController.sendUsernameAndPasswordToCheck(usernameField.getText(), passwordField.getText());
             } catch (SQLException e) {
                 e.printStackTrace();
+            }
+            if (loginController.loginStatusInfo()){
+                ViewManager.loadMainView();
             }
         });
     }

@@ -1,5 +1,6 @@
 package app.model;
 
+import app.controller.LoginController;
 import util.JDBCUtil;
 
 import java.sql.Connection;
@@ -9,6 +10,9 @@ import java.sql.SQLException;
 
 public class LoginModel {
 
+    private boolean loginStatus;
+
+    private LoginController loginController;
 
     public LoginModel(){
     }
@@ -25,10 +29,10 @@ public class LoginModel {
 
         ResultSet resultSet = preparedStatement.executeQuery();
 
-        if(resultSet.next()){
-            System.out.println("login successful");
-        } else {
-            System.out.println("login failed");
-        }
+        loginStatus = resultSet.next();
+    }
+
+    public boolean isLoginSuccessful() {
+        return loginStatus;
     }
 }
