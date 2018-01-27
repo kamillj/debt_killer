@@ -6,9 +6,7 @@ import app.model.LoginModel;
 import app.model.MainModel;
 import app.view.LoginView;
 import app.view.MainView;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.Scene;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 
 public class ViewManager {
@@ -41,7 +39,7 @@ public class ViewManager {
 
         scene = new Scene(mainView.asParent(), 1000, 600);
         stage.setScene(scene);
-        stage.setMaximized(true);
         stage.centerOnScreen();
+        stage.setMaximized(true);
     }
 }
