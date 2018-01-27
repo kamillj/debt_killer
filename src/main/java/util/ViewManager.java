@@ -29,6 +29,7 @@ public class ViewManager {
         MainModel mainModel = new MainModel();
         MainController mainController = new MainController(mainModel);
         MainView mainView = new MainView(mainController);
+        mainModel.setMainController(mainController);
 
         Scene mainScene = new Scene(mainView.asParent(), 0, 0);
         Stage mainStage = new Stage();

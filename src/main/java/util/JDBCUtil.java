@@ -8,7 +8,8 @@ public class JDBCUtil {
 
     public static Connection getConnection() {
 
-        String DATABASE_URL = "jdbc:mysql://localhost:3306/debt_killer_db?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC\n";
+        String DATABASE_URL = "jdbc:mysql://localhost:3306/debt_killer_db?autoReconnect=true&"+
+                "useSSL=false&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC\n";
         String USER = "kamillj";
         String PASSWORD = "KaloMirA333";
         String DRIVER = "com.mysql.cj.jdbc.Driver";
