@@ -1,4 +1,4 @@
-package util;
+package app;
 
 import app.controller.LoginController;
 import app.controller.MainController;
@@ -14,7 +14,7 @@ public class ViewManager {
     private static Scene scene;
     private static Stage stage;
 
-    public static void start(Stage primaryStage) {
+    static void start(Stage primaryStage) {
         stage = primaryStage;
         loadLoginView(primaryStage);
     }

@@ -10,6 +10,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
+import valid.DoubleValid;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -25,6 +26,10 @@ public class MainView {
     private DatePicker datePicker;
     private Button saveExpenseButton;
     private BorderPane mainDialog;
+
+    private DoubleValid doubleValid = new DoubleValid();
+    private Alert error = new Alert(Alert.AlertType.ERROR, "Error while saving data");
+    private Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Saved successfully");
 
     private MainController mainController;
 
@@ -63,9 +68,14 @@ public class MainView {
     private void addListeners() {
         saveExpenseButton.setOnAction((ActionEvent event) -> {
             try {
-                mainController.sendExpenseToSave(getAmount(), getCategory(), getDate());
+                String amount = getAmount();
+                if(amount.contains(",")) amount = amount.replaceAll(",",".");
+                if(doubleValid.isDouble(amount)) confirmation.showAndWait();
+                else error.showAndWait();
+                mainController.sendExpenseToSave(amount, getCategory(), getDate());
             } catch (SQLException e) {
                 e.printStackTrace();
+                error.showAndWait();
             }
         });
     }
@@ -95,8 +105,6 @@ public class MainView {
 
     private String getDate() {
         LocalDate date = datePicker.getValue();
-        String dateString = String.valueOf(date);
-        System.out.println(dateString);
-        return dateString;
+        return String.valueOf(date);
     }
 }

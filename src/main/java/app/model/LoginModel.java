@@ -1,7 +1,7 @@
 package app.model;
 
 import app.controller.LoginController;
-import util.db.JDBCUtil;
+import util.JDBCUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;

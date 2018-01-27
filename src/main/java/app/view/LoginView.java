@@ -12,7 +12,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.Button;
 import javafx.scene.layout.Priority;
-import util.ViewManager;
+import app.ViewManager;
 
 import java.sql.SQLException;
 

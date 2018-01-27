@@ -1,7 +1,7 @@
 package app.model;
 
 import app.controller.MainController;
-import util.db.JDBCUtil;
+import util.JDBCUtil;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -16,6 +16,7 @@ public class MainModel {
     public void saveExpense() throws SQLException {
         Connection connection;
         PreparedStatement preparedStatement;
+
         String sql = "INSERT INTO EXPENSES (AMOUNT, CATEGORY, DATE) VALUES (" +
                 mainController.getExpenseAmount() + ", '" +
                 mainController.getExpenseCategory() + "', '" +
