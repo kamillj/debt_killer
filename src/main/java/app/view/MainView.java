@@ -3,17 +3,23 @@ package app.view;
 import app.controller.MainController;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
 
 public class MainView {
 
+    private Text title;
+    private Label amountLabel;
+    private Label categoryLabel;
+    private Label dateLabel;
     private TextField amountField;
     private ChoiceBox<String> categoryBox;
     private DatePicker datePicker;
@@ -24,8 +30,8 @@ public class MainView {
 
     public MainView(MainController mainController) {
         this.mainController = mainController;
-        createAndConfigureView();
         createAndLayoutControls();
+        createAndConfigureView();
         addListeners();
     }
 
@@ -35,10 +41,23 @@ public class MainView {
 
     private void createAndConfigureView() {
         mainDialog = new BorderPane();
-        mainDialog.setRight(appendAddExpensePanel());
+        GridPane addExpensePanel = appendAddExpensePanel();
+        mainDialog.setRight(addExpensePanel);
     }
 
     private void createAndLayoutControls() {
+        //AddExpensePanel
+        title = new Text("Add expense");
+        title.setTextAlignment(TextAlignment.CENTER);
+        title.setFont(Font.font("Arial", FontWeight.BOLD, 16));
+        amountLabel = new Label("Amount");
+        amountField = new TextField("");
+        categoryLabel = new Label("Category");
+        categoryBox = new ChoiceBox<>(FXCollections.observableArrayList("Food", "Communication", "Charges"));
+        dateLabel = new Label("Date");
+        datePicker = new DatePicker();
+        datePicker.setValue(LocalDate.now());
+        saveExpenseButton = new Button("Save expense");
     }
 
     private void addListeners() {
@@ -53,24 +72,15 @@ public class MainView {
 
     private GridPane appendAddExpensePanel() {
         GridPane addExpensePanel = new GridPane();
-        Text title = new Text("ADD EXPENSE");
-        title.setFont(Font.font("Arial", FontWeight.BOLD, 14));
-        addExpensePanel.setMinWidth(400);
-        addExpensePanel.setStyle("-fx-background-color: DAE6F3;");
-
-        Label amountLabel = new Label("Amount");
-        amountField = new TextField("");
-        Label categoryLabel = new Label("Category");
-        categoryBox = new ChoiceBox<>(FXCollections.observableArrayList("Food", "Communication", "Charges"));
-        Label dateLabel = new Label("Date");
-        datePicker = new DatePicker();
-        saveExpenseButton = new Button("Save expense");
 
         addExpensePanel.addRow(0, title);
         addExpensePanel.addRow(1, amountLabel, amountField);
         addExpensePanel.addRow(2, categoryLabel, categoryBox);
-        addExpensePanel.addRow(3,dateLabel, datePicker);
-        addExpensePanel.addRow(4,saveExpenseButton);
+        addExpensePanel.addRow(3, dateLabel, datePicker);
+        addExpensePanel.addRow(4, saveExpenseButton);
+
+        addExpensePanel.setStyle("-fx-background-color: DAE6F3;");
+        addExpensePanel.setAlignment(Pos.CENTER);
 
         return addExpensePanel;
     }
