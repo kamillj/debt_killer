@@ -11,7 +11,6 @@ public class MainController {
     private String expenseCategory;
     private String expenseDate;
 
-    private MainView mainView;
     private MainModel mainModel;
 
     public MainController(MainModel mainModel){

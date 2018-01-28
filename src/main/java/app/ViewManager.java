@@ -1,13 +1,17 @@
 package app;
 
+import app.controller.CategoryController;
 import app.controller.LoginController;
 import app.controller.MainController;
+import app.model.CategoryModel;
 import app.model.LoginModel;
 import app.model.MainModel;
+import app.view.CategoryView;
 import app.view.LoginView;
 import app.view.MainView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+
 
 public class ViewManager {
 
@@ -41,5 +45,17 @@ public class ViewManager {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.setMaximized(true);
+    }
+
+    public static void loadCategoryView() {
+        CategoryModel categoryModel = new CategoryModel();
+        CategoryController categoryController = new CategoryController(categoryModel);
+        CategoryView categoryView = new CategoryView(categoryController);
+        categoryModel.setCategoryController(categoryController);
+
+        Scene scene = new Scene(categoryView.asParent(), 300, 400);
+        Stage stage = new Stage();
+        stage.setScene(scene);
+        stage.show();
     }
 }

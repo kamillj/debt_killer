@@ -1,9 +1,11 @@
 package app.view;
 
+import app.ViewManager;
 import app.controller.MainController;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -17,6 +19,7 @@ import java.time.LocalDate;
 
 public class MainView {
 
+    //AddExpensePanel
     private Text title;
     private Label amountLabel;
     private Label categoryLabel;
@@ -25,10 +28,15 @@ public class MainView {
     private ChoiceBox<String> categoryBox;
     private DatePicker datePicker;
     private Button saveExpenseButton;
+    private GridPane addExpensePanel;
+    //Toolbar
+    private Button categoryButton;
+    private HBox toolbar;
+
     private BorderPane mainDialog;
 
     private DoubleValid doubleValid = new DoubleValid();
-    private Alert error = new Alert(Alert.AlertType.ERROR, "Error while saving data");
+    private Alert error = new Alert(Alert.AlertType.ERROR, "Please insert correct amount");
     private Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Saved successfully");
 
     private MainController mainController;
@@ -46,8 +54,8 @@ public class MainView {
 
     private void createAndConfigureView() {
         mainDialog = new BorderPane();
-        GridPane addExpensePanel = appendAddExpensePanel();
-        mainDialog.setRight(addExpensePanel);
+        mainDialog.setRight(appendAddExpensePanel());
+        mainDialog.setTop(appendToolbar());
     }
 
     private void createAndLayoutControls() {
@@ -59,29 +67,33 @@ public class MainView {
         amountField = new TextField("");
         categoryLabel = new Label("Category");
         categoryBox = new ChoiceBox<>(FXCollections.observableArrayList("Food", "Communication", "Charges"));
+        categoryBox.getSelectionModel().selectFirst();
         dateLabel = new Label("Date");
         datePicker = new DatePicker();
         datePicker.setValue(LocalDate.now());
         saveExpenseButton = new Button("Save expense");
+
+        //Toolbar
+        categoryButton = new Button("Categories");
     }
 
     private void addListeners() {
         saveExpenseButton.setOnAction((ActionEvent event) -> {
             try {
-                String amount = getAmount();
+                String amount = getAmount().trim();
                 if(amount.contains(",")) amount = amount.replaceAll(",",".");
                 if(doubleValid.isDouble(amount)) confirmation.showAndWait();
                 else error.showAndWait();
                 mainController.sendExpenseToSave(amount, getCategory(), getDate());
             } catch (SQLException e) {
                 e.printStackTrace();
-                error.showAndWait();
             }
         });
+        categoryButton.setOnAction((ActionEvent event) -> ViewManager.loadCategoryView());
     }
 
     private GridPane appendAddExpensePanel() {
-        GridPane addExpensePanel = new GridPane();
+        addExpensePanel = new GridPane();
 
         addExpensePanel.addRow(0, title);
         addExpensePanel.addRow(1, amountLabel, amountField);
@@ -93,6 +105,14 @@ public class MainView {
         addExpensePanel.setAlignment(Pos.CENTER);
 
         return addExpensePanel;
+    }
+
+    private HBox appendToolbar(){
+        toolbar = new HBox();
+        toolbar.getChildren().add(categoryButton);
+        toolbar.setStyle("-fx-background-color: #708090;");
+
+        return toolbar;
     }
 
     private String getAmount() {
