@@ -17,4 +17,12 @@ public class CategoryController {
     public ObservableList<Category> readCategories() throws SQLException {
         return categoryModel.readCategories();
     }
+
+    public void saveCategory(String category, boolean isActive) throws SQLException {
+        categoryModel.saveCategory(category, isActive);
+    }
+
+    public void updateCategories(ObservableList<Category> categories) throws SQLException {
+        categoryModel.updateCategories(categories);
+    }
 }

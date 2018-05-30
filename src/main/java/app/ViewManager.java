@@ -11,6 +11,9 @@ import app.view.LoginView;
 import app.view.MainView;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
+
+import java.sql.SQLException;
 
 
 public class ViewManager {
@@ -30,7 +33,7 @@ public class ViewManager {
         LoginController loginController = new LoginController(loginModel);
         LoginView loginView = new LoginView(loginController);
 
-        scene = new Scene(loginView.asParent(), 400, 400);
+        scene = new Scene(loginView.asParent(), 400, 125);
         stage.setScene(scene);
         stage.show();
     }
@@ -55,6 +58,7 @@ public class ViewManager {
 
         Scene scene = new Scene(categoryView.asParent(), 300, 400);
         Stage stage = new Stage();
+        categoryView.setStage(stage);
         stage.setScene(scene);
         stage.show();
     }

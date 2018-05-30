@@ -26,10 +26,10 @@ public class LoginModel {
         preparedStatement = connection.prepareStatement(sql);
         preparedStatement.setString(1, enteredUsername);
         preparedStatement.setString(2, enteredPassword);
-
         ResultSet resultSet = preparedStatement.executeQuery();
-
         loginStatus = resultSet.next();
+
+        connection.close();
     }
 
     public boolean isLoginSuccessful() {

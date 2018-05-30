@@ -11,10 +11,12 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.List;
 
 public class CategoryModel {
 
     private CategoryController categoryController;
+
 
     public CategoryModel(){}
 
@@ -24,19 +26,52 @@ public class CategoryModel {
 
     public ObservableList<Category> readCategories() throws SQLException {
         ObservableList<Category> categories = FXCollections.observableArrayList();
-        Connection connection;
-        PreparedStatement preparedStatement;
 
-        String sql = "SELECT CATEGORY FROM CATEGORIES";
+        String sql = "SELECT CATEGORY, ACTIVE FROM CATEGORIES";
 
-        connection = JDBCUtil.getConnection();
-        preparedStatement = connection.prepareStatement(sql);
+        Connection connection = JDBCUtil.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery(sql);
 
         while (resultSet.next()){
-            categories.add(new Category(new SimpleStringProperty(resultSet.getString("CATEGORY"))));
+            categories.add(new Category(new SimpleStringProperty(resultSet.getString("CATEGORY")),
+                                        new SimpleStringProperty(resultSet.getString("ACTIVE"))));
         }
+        connection.close();
 
         return categories;
+    }
+
+    public void saveCategory(String category, boolean isActive) throws SQLException {
+        String isActiveString;
+        if(isActive) isActiveString = "1";
+        else  isActiveString = "0";
+
+        String sql = "INSERT INTO CATEGORIES (CATEGORY, ACTIVE) VALUES ( '" + category + "'," + isActiveString + ")";
+
+        System.out.println(sql);
+        Connection connection = JDBCUtil.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.executeUpdate(sql);
+        connection.close();
+    }
+
+    public void updateCategories(ObservableList<Category> categories) throws SQLException {
+        Connection connection = JDBCUtil.getConnection();
+        String sql = "DELETE FROM CATEGORIES";
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        preparedStatement.executeUpdate(sql);
+
+        int counter = 0;
+        while(counter < categories.size())
+        {
+            sql = "INSERT INTO CATEGORIES (CATEGORY, ACTIVE) VALUES ( '" +
+                    categories.get(counter).getCategoryName() + "'," +
+                    categories.get(counter).getIsActive() + ")";
+            preparedStatement.executeUpdate(sql);
+            counter++;
+        }
+
+        connection.close();
     }
 }

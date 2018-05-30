@@ -2,10 +2,11 @@ package app.view;
 
 import app.ViewManager;
 import app.controller.MainController;
+import app.dao.Category;
 import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.scene.text.Font;
@@ -32,6 +33,8 @@ public class MainView {
     //Toolbar
     private Button categoryButton;
     private HBox toolbar;
+    //Data
+    private ObservableList<String> categoriesString;
 
     private BorderPane mainDialog;
 
@@ -43,6 +46,7 @@ public class MainView {
 
     public MainView(MainController mainController) {
         this.mainController = mainController;
+        fillData();
         createAndLayoutControls();
         createAndConfigureView();
         addListeners();
@@ -66,7 +70,8 @@ public class MainView {
         amountLabel = new Label("Amount");
         amountField = new TextField("");
         categoryLabel = new Label("Category");
-        categoryBox = new ChoiceBox<>(FXCollections.observableArrayList("Food", "Communication", "Charges"));
+        categoryBox = new ChoiceBox<>();
+        categoryBox.setItems(categoriesString);
         categoryBox.getSelectionModel().selectFirst();
         dateLabel = new Label("Date");
         datePicker = new DatePicker();
@@ -113,6 +118,20 @@ public class MainView {
         toolbar.setStyle("-fx-background-color: #708090;");
 
         return toolbar;
+    }
+
+    private void fillData() {
+        categoriesString = FXCollections.observableArrayList();
+        ObservableList<Category> categories = null;
+        try {
+            categories = mainController.getActiveCategories();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        assert categories != null;
+        for (Category category : categories) {
+            categoriesString.add(category.getCategoryNameStringProperty().getValue());
+        }
     }
 
     private String getAmount() {

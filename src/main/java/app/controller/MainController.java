@@ -1,7 +1,8 @@
 package app.controller;
 
+import app.dao.Category;
 import app.model.MainModel;
-import app.view.MainView;
+import javafx.collections.ObservableList;
 
 import java.sql.SQLException;
 
@@ -34,5 +35,9 @@ public class MainController {
 
     public String getExpenseDate() {
         return expenseDate;
+    }
+
+    public ObservableList<Category> getActiveCategories() throws SQLException {
+        return mainModel.getActiveCategories();
     }
 }
