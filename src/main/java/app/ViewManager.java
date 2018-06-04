@@ -10,7 +10,9 @@ import app.view.CategoryView;
 import app.view.LoginView;
 import app.view.MainView;
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.stage.WindowEvent;
 
 import java.sql.SQLException;
@@ -58,6 +60,9 @@ public class ViewManager {
 
         Scene scene = new Scene(categoryView.asParent(), 300, 400);
         Stage stage = new Stage();
+        stage.initStyle(StageStyle.UTILITY);
+        stage.initModality(Modality.WINDOW_MODAL);
+        stage.initOwner(ViewManager.stage);
         categoryView.setStage(stage);
         stage.setScene(scene);
         stage.show();
