@@ -35,7 +35,11 @@ public class ViewManager {
         LoginController loginController = new LoginController(loginModel);
         LoginView loginView = new LoginView(loginController);
 
-        scene = new Scene(loginView.asParent(), 400, 125);
+        scene = new Scene(loginView.asParent(), 400, 400);
+        stage.initStyle(StageStyle.UTILITY);
+        stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) stage.setMaximized(false);
+        });
         stage.setScene(scene);
         stage.show();
     }
@@ -65,6 +69,9 @@ public class ViewManager {
         stage.initOwner(ViewManager.stage);
         categoryView.setStage(stage);
         stage.setScene(scene);
+        stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) stage.setMaximized(false);
+        });
         stage.show();
     }
 }
