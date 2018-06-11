@@ -3,6 +3,8 @@ package app.view;
 import app.ViewManager;
 import app.controller.MainController;
 import app.dao.Category;
+import app.dao.Expense;
+import app.view.table.ExpenseTableView;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -33,6 +35,9 @@ public class MainView {
     //Toolbar
     private Button categoryButton;
     private HBox toolbar;
+    //ExpensesPanel
+    private HBox expensePanel;
+    private TableView<Expense> expenseTableView;
     //Data
     private ObservableList<String> categoriesString;
 
@@ -60,6 +65,7 @@ public class MainView {
         mainDialog = new BorderPane();
         mainDialog.setRight(appendAddExpensePanel());
         mainDialog.setTop(appendToolbar());
+        mainDialog.setCenter(appendExpensePanel());
     }
 
     private void createAndLayoutControls() {
@@ -120,6 +126,20 @@ public class MainView {
         return toolbar;
     }
 
+    private HBox appendExpensePanel()
+    {
+        expensePanel = new HBox();
+        expenseTableView = new ExpenseTableView();
+        try {
+            expenseTableView.setItems(mainController.getExpenseData());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        expensePanel.getChildren().add(expenseTableView);
+
+        return expensePanel;
+    }
+
     private void fillData() {
         categoriesString = FXCollections.observableArrayList();
         ObservableList<Category> categories = null;
@@ -130,7 +150,7 @@ public class MainView {
         }
         assert categories != null;
         for (Category category : categories) {
-            categoriesString.add(category.getCategoryNameStringProperty().getValue());
+            categoriesString.add(category.categoryNameProperty().getValue());
         }
     }
 

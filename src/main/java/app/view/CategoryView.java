@@ -9,6 +9,7 @@ import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.control.cell.CheckBoxTableCell;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -21,7 +22,7 @@ public class CategoryView {
 
     private Label tableTitle;
     private TableColumn<Category, String> categoryColumn;
-    private TableColumn<Category, String> activeColumn;
+    private TableColumn<Category, Boolean> activeColumn;
     private TableView<Category> categoryTable;
     private TextField categoryField;
     private CheckBox isActiveCheck;
@@ -56,7 +57,7 @@ public class CategoryView {
         categoryColumn.setMinWidth(200);
         activeColumn.setMinWidth(100);
         categoryColumn.setCellFactory(TextFieldTableCell.forTableColumn());
-        activeColumn.setCellFactory(TextFieldTableCell.forTableColumn());
+        activeColumn.setCellFactory(activeCell -> new CheckBoxTableCell<>());
         categoryTable.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
         categoryTable.setEditable(true);
         categoryTable.getColumns().addAll(categoryColumn, activeColumn);
@@ -94,8 +95,8 @@ public class CategoryView {
     }
 
     private void fillData(){
-        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().getCategoryNameStringProperty());
-        activeColumn.setCellValueFactory((cellData -> cellData.getValue().getIsActiveStringProperty()));
+        categoryColumn.setCellValueFactory(cellData -> cellData.getValue().categoryNameProperty());
+        activeColumn.setCellValueFactory((cellData -> cellData.getValue().isActiveProperty()));
         try {
             categoryTable.setItems(categoryController.readCategories());
         } catch (SQLException e) {

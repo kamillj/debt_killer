@@ -1,22 +1,25 @@
 package app.dao;
 
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 
 public class Category {
 
-    private final SimpleStringProperty categoryName;
-    private final SimpleStringProperty isActive;
+    private final StringProperty categoryName;
+    private final BooleanProperty isActive;
 
-    public Category(SimpleStringProperty categoryName, SimpleStringProperty isActive) {
-        this.categoryName = categoryName;
-        this.isActive = isActive;
+    public Category(String categoryName, boolean isActive) {
+        this.categoryName = new SimpleStringProperty(categoryName);
+        this.isActive = new SimpleBooleanProperty(isActive);
     }
 
-    public SimpleStringProperty getCategoryNameStringProperty() {
+    public StringProperty categoryNameProperty() {
         return categoryName;
     }
 
-    public SimpleStringProperty getIsActiveStringProperty() {
+    public BooleanProperty isActiveProperty() {
         return isActive;
     }
 
@@ -24,15 +27,15 @@ public class Category {
         return categoryName.getValue();
     }
 
-    public String getIsActive() {
+    public boolean getIsActive() {
         return isActive.getValue();
     }
 
     public void setCategoryName(String categoryName) {
-        this.categoryName.set(categoryName);
+        this.categoryName.setValue(categoryName);
     }
 
-    public void setCategoryActive(String isActive) {
+    public void setCategoryActive(boolean isActive) {
         this.isActive.setValue(isActive);
     }
 }

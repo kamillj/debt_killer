@@ -33,8 +33,7 @@ public class CategoryModel {
         ResultSet resultSet = preparedStatement.executeQuery(sql);
 
         while (resultSet.next()){
-            categories.add(new Category(new SimpleStringProperty(resultSet.getString("CATEGORY")),
-                                        new SimpleStringProperty(resultSet.getString("ACTIVE"))));
+            categories.add(new Category(resultSet.getString("CATEGORY"), resultSet.getString("ACTIVE").equals("1")));
         }
         connection.close();
 
@@ -47,8 +46,6 @@ public class CategoryModel {
         else  isActiveString = "0";
 
         String sql = "INSERT INTO CATEGORIES (CATEGORY, ACTIVE) VALUES ( '" + category + "'," + isActiveString + ")";
-
-        System.out.println(sql);
         Connection connection = JDBCUtil.getConnection();
         PreparedStatement preparedStatement = connection.prepareStatement(sql);
         preparedStatement.executeUpdate(sql);
@@ -70,7 +67,6 @@ public class CategoryModel {
             preparedStatement.executeUpdate(sql);
             counter++;
         }
-
         connection.close();
     }
 }

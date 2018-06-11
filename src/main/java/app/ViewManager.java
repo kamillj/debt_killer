@@ -50,7 +50,7 @@ public class ViewManager {
         MainView mainView = new MainView(mainController);
         mainModel.setMainController(mainController);
 
-        scene = new Scene(mainView.asParent(), 1000, 600);
+        scene = new Scene(mainView.asParent(), 1000, 800);
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.setMaximized(true);
@@ -67,6 +67,8 @@ public class ViewManager {
         stage.initStyle(StageStyle.UTILITY);
         stage.initModality(Modality.WINDOW_MODAL);
         stage.initOwner(ViewManager.stage);
+        stage.setMinWidth(300);
+        stage.setMinHeight(400);
         categoryView.setStage(stage);
         stage.setScene(scene);
         stage.maximizedProperty().addListener((observable, oldValue, newValue) -> {

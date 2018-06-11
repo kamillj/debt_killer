@@ -2,7 +2,7 @@ package app.model;
 
 import app.controller.MainController;
 import app.dao.Category;
-import javafx.beans.property.SimpleStringProperty;
+import app.dao.Expense;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import util.JDBCUtil;
@@ -46,11 +46,27 @@ public class MainModel {
         preparedStatement = connection.prepareStatement(sql);
         ResultSet resultSet = preparedStatement.executeQuery(sql);
         while (resultSet.next()){
-            categories.add(new Category(new SimpleStringProperty(resultSet.getString("CATEGORY")),
-                                        new SimpleStringProperty("1")));
+            categories.add(new Category(resultSet.getString("CATEGORY"), true));
         }
         connection.close();
 
         return categories;
+    }
+
+    public ObservableList<Expense> getExpenseData() throws SQLException {
+        ObservableList<Expense> expenses = FXCollections.observableArrayList();
+
+        String sql = "SELECT AMOUNT, CATEGORY, DATE FROM EXPENSES";
+        Connection connection = JDBCUtil.getConnection();
+        PreparedStatement preparedStatement = connection.prepareStatement(sql);
+        ResultSet resultSet = preparedStatement.executeQuery(sql);
+        while (resultSet.next()){
+            expenses.add(new Expense(resultSet.getDouble("AMOUNT"),
+                    resultSet.getString("CATEGORY"),
+                    resultSet.getDate("DATE")));
+        }
+        connection.close();
+
+        return expenses;
     }
 }
